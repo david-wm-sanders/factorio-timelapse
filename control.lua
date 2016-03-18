@@ -2,10 +2,11 @@ require "defines"
 
 -- Derived from util.formattime
 function ftime(ticks)
-  local seconds = ticks / 60
-  local min = math.floor(seconds / 60)
-  local sec = math.floor(seconds - 60 * min)
-  return string.format("%d_%02d", min, sec)
+  local sec = ticks / 60
+  local hours = math.floor(sec / 3600)
+  local minutes = math.floor(sec / 60 - hours * 60)
+  local seconds = math.floor(sec - hours * 3600 - minutes * 60)
+  return string.format("%02d_%02d_%02d", hours, minutes, seconds)
 end
 
 function init_timelapse()
@@ -35,5 +36,5 @@ script.on_event(defines.events.on_tick, function(event)
       path = "timelapse/"..seed.."_"..game.tick.."_"..ftime(game.tick)..".png",
       show_gui = global.timelapse.show_gui,
       show_entity_info = global.timelapse.show_entity_info}
-    end
+  end
 end)
