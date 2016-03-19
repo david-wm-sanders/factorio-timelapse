@@ -10,6 +10,6 @@ The screenshots are written to:
 ## Attention
 The output of this mod can grow into GBs quite quickly! Keep an eye on the script-output/timelapse folder!
 
-The size of the output images can be reduced by decreasing the output resolution from the default 2500x2500. This can be combined with decreasing the zoom factor to keep the same area in view.
+The size of the output images can be reduced by decreasing the output resolution from the default 2000x2000. This can be combined with decreasing the zoom factor to keep the same area in view.
 
 Finally, the mod can easily be temporarily disabled from the mods menu in the game.
