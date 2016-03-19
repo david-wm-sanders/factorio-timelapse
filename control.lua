@@ -11,6 +11,8 @@ end
 
 function init_timelapse()
   global.timelapse = {
+    -- interval = 60 ticks per seconds * number of seconds
+    interval = 60 * 10,
     resolution = {2500, 2500},
     zoom = 0.29,
     show_gui = false,
@@ -23,7 +25,7 @@ script.on_init(function()
 end)
 
 script.on_event(defines.events.on_tick, function(event)
-  if (game.tick % 1800 == 0 and game.tick > 0) then
+  if (game.tick % global.timelapse.interval == 0 and game.tick > 0) then
     local player = game.player
     local spawnpos = player.force.get_spawn_position(1)
     local seed = player.surface.map_gen_settings.seed
