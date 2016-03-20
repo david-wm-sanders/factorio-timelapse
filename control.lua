@@ -39,7 +39,7 @@ end
 function take_shot()
   global.timelapse.count = global.timelapse.count + 1
   local seed = game.player.surface.map_gen_settings.seed
-  local outf = string.format("timelapse/%i_%i_%s.png", seed, game.tick, ftime(game.tick))
+  local outf = string.format("timelapse/%i_%010i_%s.png", seed, game.tick, ftime(game.tick))
   game.player.print(string.format("x%i -> %q", global.timelapse.count, outf))
   game.take_screenshot{
     player = nil,
