@@ -8,8 +8,14 @@ The screenshots are written to:
 * `Users/Name/AppData/Roaming/Factorio/script-output/timelapse` on Windows
 
 ## Attention
-The output of this mod can grow into GBs quite quickly! Keep an eye on the script-output/timelapse folder!
+The output of this mod can grow into GBs quite quickly! Keep an eye on the **script-output/timelapse** folder!
 
-The size of the output images can be reduced by decreasing the output resolution from the default 2000x2000. This can be combined with decreasing the zoom factor to keep the same area in view.
-
-Finally, the mod can easily be temporarily disabled from the mods menu in the game.
+## Installation
+0. Download the [latest release](https://github.com/david-wm-sanders/factorio-timelapse/releases).
+0. Extract the folder in the archive to:
+  * `__PATH__system-write-data__/mods`
+  * `/home/user/.factorio/mods` on Linux
+  * `Users/Name/AppData/Roaming/Factorio/mods` on Windows
+0. Rename the folder from **factorio-timelapse-x.y.z** to **timelapse_x.y.z**.  
+   For example, **factorio-timelapse-1.2.3** would become **timelapse_1.2.3**.
+0. Factorio should then automatically detect and enable the mod next time it is started.
