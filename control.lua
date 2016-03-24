@@ -4,14 +4,14 @@ function init_timelapse()
   global.timelapse = {
     count = 0,
     -- interval = 60 ticks per seconds * number of seconds between shots
-    interval = 60 * 60,
+    interval = 60 * 30,
     -- position = game.player.force.get_spawn_position(1)
     -- The spawn is at {0, 0} by default
     position = {0, 0},
     -- resolution = {x, y}
-    resolution = {2000, 2000},
+    resolution = {1920, 1080},
     -- zoom (default: 1, minimum scrollable to in game: 0.29)
-    zoom = 0.29,
+    zoom = 0.1,
     show_gui = false,
     show_entity_info = false,
   }
@@ -52,7 +52,7 @@ function take_shot()
 end
 
 script.on_event(defines.events.on_tick, function(event)
-  if (game.tick % global.timelapse.interval == 0 and game.tick > 0) then
+  if game.tick % global.timelapse.interval == 0 then
     take_shot()
   end
 end)
