@@ -1,18 +1,31 @@
 require "defines"
 
-timelapse = {
-  -- interval = 60 ticks per seconds * number of seconds between shots
-  interval = 60 * 30,
-  -- position = game.player.force.get_spawn_position(1)
-  -- The spawn is at {0, 0} by default
-  position = {0, 0},
-  -- resolution = {x, y}
-  resolution = {1920, 1080},
-  -- zoom (default: 1, minimum scrollable to in game: 0.29)
-  zoom = 0.15,
-  show_gui = false,
-  show_entity_info = false,
-}
+function init_timelapse()
+  global.timelapse = {
+    count = 0,
+    -- interval = 60 ticks per seconds * number of seconds between shots
+    interval = 60 * 60,
+    -- position = game.player.force.get_spawn_position(1)
+    -- The spawn is at {0, 0} by default
+    position = {0, 0},
+    -- resolution = {x, y}
+    resolution = {2000, 2000},
+    -- zoom (default: 1, minimum scrollable to in game: 0.29)
+    zoom = 0.29,
+    show_gui = false,
+    show_entity_info = false,
+  }
+end
+
+script.on_init(function()
+  init_timelapse()
+end)
+
+script.on_load(function()
+  if global.timelapse == nil then
+    init_timelapse()
+  end
+end)
 
 -- Derived from util.formattime
 function ftime(ticks)
@@ -24,22 +37,22 @@ function ftime(ticks)
 end
 
 function take_shot()
+  global.timelapse.count = global.timelapse.count + 1
   local seed = game.player.surface.map_gen_settings.seed
   local outf = string.format("timelapse/%i_%010i_%s.png", seed, game.tick, ftime(game.tick))
-  game.player.print(string.format("Saving %q", outf))
+  game.player.print(string.format("x%i -> %q", global.timelapse.count, outf))
   game.take_screenshot{
     player = nil,
-    position = timelapse.position,
-    resolution = timelapse.resolution,
-    zoom = timelapse.zoom,
+    position = global.timelapse.position,
+    resolution = global.timelapse.resolution,
+    zoom = global.timelapse.zoom,
     path = outf,
-    show_gui = timelapse.show_gui,
-    show_entity_info = timelapse.show_entity_info
-  }
+    show_gui = global.timelapse.show_gui,
+    show_entity_info = global.timelapse.show_entity_info}
 end
 
 script.on_event(defines.events.on_tick, function(event)
-  if (game.tick % timelapse.interval == 0 and game.tick > 0) then
+  if (game.tick % global.timelapse.interval == 0 and game.tick > 0) then
     take_shot()
   end
 end)
