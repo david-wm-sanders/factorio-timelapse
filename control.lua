@@ -1,18 +1,61 @@
 require "defines"
 
+remote.add_interface("timelapse",
+{
+  active = function(bool)
+    global.timelapse.active = bool
+  end,
+
+  interval = function(seconds)
+    global.timelapse.interval = 60 * seconds
+  end,
+
+  position = function(position)
+    global.timelapse.position = position
+  end,
+
+  resolution = function(x, y)
+    global.timelapse.resolution = {x=x, y=y}
+  end,
+
+  zoom = function(zoom)
+    global.timelapse.zoom = zoom
+  end,
+
+  show_entity_info = function(bool)
+    global.timelapse.show_entity_info = bool
+  end,
+
+  data = function()
+    d = global.timelapse
+    s = string.format("Timelapse: \z
+                      Count = %i, Active = %s, Interval = %i, \z
+                      Position = {x=%.2f, y=%.2f}, Resolution = %ix%i, \z
+                      Zoom = %.2f, Show Entity Info = %s",
+                      d.count, d.active, d.interval / 60,
+                      d.position.x, d.position.y, d.resolution.x, d.resolution.y,
+                      d.zoom, d.show_entity_info)
+    game.player.print(s)
+  end,
+
+  reset = function()
+    init_timelapse()
+  end,
+})
+
 function init_timelapse()
   global.timelapse = {
     count = 0,
+    active = false,
     -- interval = 60 ticks per seconds * number of seconds between shots
     interval = 60 * 30,
     -- position = game.player.force.get_spawn_position(1)
     -- The spawn is at {0, 0} by default
-    position = {0, 0},
+    position = {x=0, y=0},
     -- resolution = {x, y}
-    resolution = {1920, 1080},
+    resolution = {x=1920, y=1080},
     -- zoom (default: 1, minimum scrollable to in game: 0.29)
     zoom = 0.1,
-    show_gui = false,
     show_entity_info = false,
   }
 end
@@ -47,12 +90,14 @@ function take_shot()
     resolution = global.timelapse.resolution,
     zoom = global.timelapse.zoom,
     path = outf,
-    show_gui = global.timelapse.show_gui,
+    show_gui = false,
     show_entity_info = global.timelapse.show_entity_info}
 end
 
 script.on_event(defines.events.on_tick, function(event)
-  if game.tick % global.timelapse.interval == 0 then
-    take_shot()
+  if global.timelapse.active then
+    if game.tick % global.timelapse.interval == 0 then
+      take_shot()
+    end
   end
 end)
