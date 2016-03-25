@@ -14,8 +14,8 @@ remote.add_interface("timelapse",
     global.timelapse.position = position
   end,
 
-  resolution = function(x, y)
-    global.timelapse.resolution = {x=x, y=y}
+  resolution = function(resolution)
+    global.timelapse.resolution = resolution
   end,
 
   zoom = function(zoom)
