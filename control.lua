@@ -3,38 +3,67 @@ require "defines"
 remote.add_interface("timelapse",
 {
   active = function(bool)
-    global.timelapse.active = bool
+    if bool == nil or type(bool) ~= "boolean" then
+      game.player.print(string.format("Active = %s", global.timelapse.active))
+    else
+      global.timelapse.active = bool
+    end
   end,
 
   interval = function(seconds)
-    global.timelapse.interval = 60 * seconds
+    if seconds == nil or type(seconds) ~= "number" then
+      game.player.print(string.format("Interval = %is", global.timelapse.interval / 60))
+    else
+      global.timelapse.interval = 60 * seconds
+    end
   end,
 
   position = function(position)
-    global.timelapse.position = position
+    if position == nil or type(position) ~= "table" then
+      game.player.print(string.format("Position = {x=%.2f, y=%.2f}",
+                                      global.timelapse.position.x,
+                                      global.timelapse.position.y))
+    else
+      global.timelapse.position = position
+    end
   end,
 
   resolution = function(resolution)
-    global.timelapse.resolution = resolution
+    if resolution == nil or type(resolution) ~= "table" then
+      game.player.print(string.format("Resolution = %ix%i",
+                                      global.timelapse.resolution.x,
+                                      global.timelapse.resolution.y))
+    else
+      global.timelapse.resolution = resolution
+    end
   end,
 
   zoom = function(zoom)
-    global.timelapse.zoom = zoom
+    if zoom == nil or type(zoom) ~= "number" then
+      game.player.print(string.format("Zoom = %.2f", global.timelapse.zoom))
+    else
+      global.timelapse.zoom = zoom
+    end
   end,
 
   show_entity_info = function(bool)
-    global.timelapse.show_entity_info = bool
+    if bool == nil or type(bool) ~= "boolean" then
+      game.player.print(string.format("Show Entity Info = %s",
+                                      global.timelapse.show_entity_info))
+    else
+      global.timelapse.show_entity_info = bool
+    end
   end,
 
   data = function()
-    d = global.timelapse
-    s = string.format("Timelapse: \z
-                      Count = %i, Active = %s, Interval = %i, \z
-                      Position = {x=%.2f, y=%.2f}, Resolution = %ix%i, \z
-                      Zoom = %.2f, Show Entity Info = %s",
-                      d.count, d.active, d.interval / 60,
-                      d.position.x, d.position.y, d.resolution.x, d.resolution.y,
-                      d.zoom, d.show_entity_info)
+    local d = global.timelapse
+    local s = string.format("Timelapse: \z
+                            Count = %i, Active = %s, Interval = %is, \z
+                            Position = {x=%.2f, y=%.2f}, Resolution = %ix%i, \z
+                            Zoom = %.2f, Show Entity Info = %s",
+                            d.count, d.active, d.interval / 60,
+                            d.position.x, d.position.y, d.resolution.x, d.resolution.y,
+                            d.zoom, d.show_entity_info)
     game.player.print(s)
   end,
 
