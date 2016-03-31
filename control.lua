@@ -3,53 +3,65 @@ require "defines"
 remote.add_interface("timelapse",
 {
   active = function(bool)
-    if bool == nil or type(bool) ~= "boolean" then
+    if bool == nil then
       game.player.print(string.format("Active = %s", global.timelapse.active))
+    elseif type(bool) ~= "boolean" then
+      game.player.print("Argument must be a boolean")
     else
       global.timelapse.active = bool
     end
   end,
 
   interval = function(seconds)
-    if seconds == nil or type(seconds) ~= "number" then
+    if seconds == nil then
       game.player.print(string.format("Interval = %is", global.timelapse.interval / 60))
+    elseif type(seconds) ~= "number" then
+      game.player.print("Argument must be a number")
     else
       global.timelapse.interval = 60 * seconds
     end
   end,
 
   position = function(position)
-    if position == nil or type(position) ~= "table" then
+    if position == nil then
       game.player.print(string.format("Position = {x=%.2f, y=%.2f}",
                                       global.timelapse.position.x,
                                       global.timelapse.position.y))
+    elseif type(position) ~= "table" then
+      game.player.print("Argument must be a table")
     else
       global.timelapse.position = position
     end
   end,
 
   resolution = function(resolution)
-    if resolution == nil or type(resolution) ~= "table" then
+    if resolution == nil then
       game.player.print(string.format("Resolution = %ix%i",
                                       global.timelapse.resolution.x,
                                       global.timelapse.resolution.y))
+    elseif type(resolution) ~= "table" then
+      game.player.print("Argument must be a table")
     else
       global.timelapse.resolution = resolution
     end
   end,
 
   zoom = function(zoom)
-    if zoom == nil or type(zoom) ~= "number" then
+    if zoom == nil then
       game.player.print(string.format("Zoom = %.2f", global.timelapse.zoom))
+    elseif type(zoom) ~= "number" then
+      game.player.print("Argument must be a number")
     else
       global.timelapse.zoom = zoom
     end
   end,
 
   show_entity_info = function(bool)
-    if bool == nil or type(bool) ~= "boolean" then
+    if bool == nil then
       game.player.print(string.format("Show Entity Info = %s",
                                       global.timelapse.show_entity_info))
+    elseif type(bool) ~= "boolean" then
+      game.player.print("Argument must be a boolean")
     else
       global.timelapse.show_entity_info = bool
     end
