@@ -111,6 +111,10 @@ script.on_load(function()
   end
 end)
 
+script.on_configuration_changed(function(data)
+  init_timelapse()
+end)
+
 -- Derived from util.formattime
 function ftime(ticks)
   local sec = ticks / 60
