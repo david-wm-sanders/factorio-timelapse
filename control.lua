@@ -19,6 +19,11 @@ remote.add_interface("timelapse",
       game.player.print("Argument must be a boolean")
     else
       global.timelapse.active = bool
+      if bool == true then
+        game.player.print("Timelapse activated")
+      else
+        game.player.print("Timelapse deactivated")
+      end
     end
   end,
 
