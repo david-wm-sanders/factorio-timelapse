@@ -38,9 +38,7 @@ remote.add_interface("timelapse",
 
   position = function(position)
     if position == nil then
-      game.player.print(string.format("Position = {x=%.2f, y=%.2f}",
-                                      global.timelapse.position.x,
-                                      global.timelapse.position.y))
+      game.player.print(string.format("Position = {x=%.2f, y=%.2f}", global.timelapse.position.x, global.timelapse.position.y))
     elseif type(position) ~= "table" then
       game.player.print("Argument must be a table")
     else
@@ -60,9 +58,7 @@ remote.add_interface("timelapse",
 
   resolution = function(resolution)
     if resolution == nil then
-      game.player.print(string.format("Resolution = %ix%i",
-                                      global.timelapse.resolution.x,
-                                      global.timelapse.resolution.y))
+      game.player.print(string.format("Resolution = %ix%i", global.timelapse.resolution.x, global.timelapse.resolution.y))
     elseif type(resolution) ~= "table" then
       game.player.print("Argument must be a table")
     else
@@ -98,8 +94,7 @@ remote.add_interface("timelapse",
 
   show_entity_info = function(bool)
     if bool == nil then
-      game.player.print(string.format("Show Entity Info = %s",
-                                      global.timelapse.show_entity_info))
+      game.player.print(string.format("Show Entity Info = %s", global.timelapse.show_entity_info))
     elseif type(bool) ~= "boolean" then
       game.player.print("Argument must be a boolean")
     else
