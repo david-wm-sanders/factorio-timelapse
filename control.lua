@@ -1,5 +1,15 @@
 require "defines"
 
+function is_array(t)
+    -- From: https://ericjmritz.name/2014/02/26/lua-is_array/
+    local i = 0
+    for _ in pairs(t) do
+        i = i + 1
+        if t[i] == nil then return false end
+    end
+    return true
+end
+
 remote.add_interface("timelapse",
 {
   active = function(bool)
@@ -18,7 +28,11 @@ remote.add_interface("timelapse",
     elseif type(seconds) ~= "number" then
       game.player.print("Argument must be a number")
     else
-      global.timelapse.interval = 60 * seconds
+      if seconds < 10 then
+        game.player.print("Argument must be >= 10")
+      else
+        global.timelapse.interval = 60 * seconds
+      end
     end
   end,
 
@@ -30,7 +44,17 @@ remote.add_interface("timelapse",
     elseif type(position) ~= "table" then
       game.player.print("Argument must be a table")
     else
-      global.timelapse.position = position
+      local x, y = 0, 0
+      if is_array(position) then
+        x, y = position[1], position[2]
+      else
+        x, y = position.x, position.y
+      end
+      if type(x) ~= "number" or type(y) ~= "number" then
+        game.player.print("Argument must be a table whose values are numbers")
+      else
+        global.timelapse.position = {x=x, y=y}
+      end
     end
   end,
 
@@ -42,7 +66,19 @@ remote.add_interface("timelapse",
     elseif type(resolution) ~= "table" then
       game.player.print("Argument must be a table")
     else
-      global.timelapse.resolution = resolution
+      local x, y = 1920, 1080
+      if is_array(resolution) then
+        x, y = resolution[1], resolution[2]
+      else
+        x, y = resolution.x, resolution.y
+      end
+      if type(x) ~= "number" or type(y) ~= "number" then
+        game.player.print("Argument must be a table whose values are numbers")
+      elseif x < 10 or y < 10 then
+        game.player.print("Argument must be a table whose values are >= 10")
+      else
+        global.timelapse.resolution = {x=x, y=y}
+      end
     end
   end,
 
@@ -52,7 +88,11 @@ remote.add_interface("timelapse",
     elseif type(zoom) ~= "number" then
       game.player.print("Argument must be a number")
     else
-      global.timelapse.zoom = zoom
+      if zoom >= 0.1 and zoom <= 3 then
+        global.timelapse.zoom = zoom
+      else
+        game.player.print("Argument must be a number >= 0.1 and <= 3")
+      end
     end
   end,
 
