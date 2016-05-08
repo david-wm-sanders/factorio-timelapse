@@ -62,3 +62,5 @@ The mod attempts to provide helpful messages if you provide invalid input to the
 ## Making a video from the Timelapse images
 ### Linux
 Use the **make_timelapse.sh** script to command ffmpeg to stitch Timelapse images into a video.
+
+[Example video](https://www.youtube.com/watch?v=tAKy2vmT5AM)
