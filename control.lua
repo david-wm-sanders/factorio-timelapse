@@ -130,10 +130,8 @@ function init_timelapse()
     active = false,
     -- interval = 60 ticks per seconds * number of seconds between shots
     interval = 60 * 30,
-    -- position = game.player.force.get_spawn_position(1)
     -- The spawn is at {0, 0} by default
     position = {x=0, y=0},
-    -- resolution = {x, y}
     resolution = {x=1920, y=1080},
     -- zoom (default: 1, minimum scrollable to in game: 0.29)
     zoom = 0.1,
