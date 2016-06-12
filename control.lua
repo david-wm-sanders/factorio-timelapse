@@ -1,5 +1,8 @@
 require "defines"
 
+local state = 0
+local current_time = 1.0
+
 function is_array(t)
     -- From: https://ericjmritz.name/2014/02/26/lua-is_array/
     local i = 0
@@ -110,11 +113,17 @@ remote.add_interface("timelapse",
   data = function()
     local d = global.timelapse
     local s = string.format("Timelapse: \z
-                            Count = %i, Active = %s, Interval = %is, \z
-                            Position = {x=%.2f, y=%.2f}, Resolution = %ix%i, \z
+                            Count = %i, Active = %s, \z
+                            Light Mode = %s, Fixed Light = %.2f, \z
+                            Interval = %is, \z
+                            Position = {x=%.2f, y=%.2f}, \z
+                            Resolution = %ix%i, \z
                             Zoom = %.2f, Show Entity Info = %s",
-                            d.count, d.active, d.interval / 60,
-                            d.position.x, d.position.y, d.resolution.x, d.resolution.y,
+                            d.count, d.active,
+                            d.light_mode, d.fixed_light,
+                            d.interval / 60,
+                            d.position.x, d.position.y,
+                            d.resolution.x, d.resolution.y,
                             d.zoom, d.show_entity_info)
     game.player.print(s)
   end,
@@ -128,6 +137,8 @@ function init_timelapse()
   global.timelapse = {
     count = 0,
     active = false,
+    light_mode = "fixed",
+    fixed_light = 1.0,
     -- interval = 60 ticks per seconds * number of seconds between shots
     interval = 60 * 30,
     -- The spawn is at {0, 0} by default
@@ -177,10 +188,36 @@ function take_shot()
     show_entity_info = global.timelapse.show_entity_info}
 end
 
+function light()
+  local d = global.timelapse
+  if d.light_mode == "fixed" then
+    current_time = game.daytime
+    local s = string.format("Timelapse: light: %.2f -> %.2f", current_time, d.fixed_light)
+    game.player.print(s)
+    game.daytime = d.fixed_light
+  end
+end
+
+function unlight()
+  local d = global.timelapse
+  if d.light_mode == "fixed" then
+    local s = string.format("Timelapse: unlight: %.2f -> %.2f", d.fixed_light, current_time)
+    game.player.print(s)
+    game.daytime = current_time
+  end
+end
+
 script.on_event(defines.events.on_tick, function(event)
   if global.timelapse.active then
-    if game.tick % global.timelapse.interval == 0 then
+    if (game.tick + 1) % global.timelapse.interval == 0 then
+      light()
+      state = 1
+    elseif state == 1 then
       take_shot()
+      state = 2
+    elseif state == 2 then
+      unlight()
+      state = 0
     end
   end
 end)
