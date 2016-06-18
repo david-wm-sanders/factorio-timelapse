@@ -9,6 +9,8 @@
 # Select the input by matching all images with $1 in their name
 # -c:v libx264
 # Encode the video stream with the libx264 codec
+# -s 1920x1080
+# Scale the output to 1920x1080
 # -vf "fps=24,format=yuv420p"
 # Video filter: use a filterchain to set the output fps to 24 and format=yuv420p
 # -preset medium
@@ -23,6 +25,7 @@ ffmpeg \
 -framerate 8 \
 -pattern_type glob -i "../../script-output/timelapse/$1*.png" \
 -c:v libx264 \
+-s 1920x1080 \
 -vf "fps=24,format=yuv420p" \
 -preset medium \
 -crf 23 \
