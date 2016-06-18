@@ -30,6 +30,34 @@ remote.add_interface("timelapse",
     end
   end,
 
+  light_mode = function(mode)
+    if mode == nil then
+      game.player.print(string.format("Light Mode = %s", global.timelapse.light_mode))
+    elseif type(mode) ~= "string" then
+      game.player.print("Argument must be a string")
+    else
+      if mode == "fixed" or mode == "none" then
+        global.timelapse.light_mode = mode
+      else
+        game.player.print("Argument must be \"fixed\" or \"none\".")
+      end
+    end
+  end,
+
+  fixed_light = function(light)
+    if light == nil then
+      game.player.print(string.format("Fixed Light = %.2f", global.timelapse.fixed_light))
+    elseif type(light) ~= "number" then
+      game.player.print("Argument must be a number")
+    else
+      if light < 0 or light > 1 then
+        game.player.print("Argument must be a number >= 0 and <= 1")
+      else
+        global.timelapse.fixed_light = light
+      end
+    end
+  end,
+
   interval = function(seconds)
     if seconds == nil then
       game.player.print(string.format("Interval = %is", global.timelapse.interval / 60))
@@ -192,8 +220,6 @@ function light()
   local d = global.timelapse
   if d.light_mode == "fixed" then
     current_time = game.daytime
-    local s = string.format("Timelapse: light: %.2f -> %.2f", current_time, d.fixed_light)
-    game.player.print(s)
     game.daytime = d.fixed_light
   end
 end
@@ -201,8 +227,6 @@ end
 function unlight()
   local d = global.timelapse
   if d.light_mode == "fixed" then
-    local s = string.format("Timelapse: unlight: %.2f -> %.2f", d.fixed_light, current_time)
-    game.player.print(s)
     game.daytime = current_time
   end
 end
