@@ -34,6 +34,12 @@ To deactivate Timelapse, use:
 ### Controlling Timelapse
 In extension to **active**, several other functions are provided:
 
+* **light_mode**: to set the light mode, use:  
+`/c remote.call("timelapse", "light_mode", "mode")`  
+*[Note: Valid lighting modes are "fixed" or "none", default is "fixed"]*
+* **fixed_light**: to set the fixed light value, use:  
+`/c remote.call("timelapse", "fixed_light", light_value)`  
+*[Note: the time of day to switch to before taking the shot, a float between 0 and 1.0]*
 * **interval**: to set the interval, use:  
 `/c remote.call("timelapse", "interval", interval_in_seconds)`
 * **position**: to set the position, use:  
@@ -55,9 +61,15 @@ In extension to **active**, several other functions are provided:
 With regards to **position**, centre on your current position by using:  
 `/c remote.call("timelapse", "position", game.player.position)`
 
-The **active**, **interval**, **position**, **resolution**, **zoom**, and **show_entity_info** functions can also be called without an argument to get their current value.
+The **active**, **light_mode**, **fixed_light**, **interval**, **position**, **resolution**, **zoom**, and **show_entity_info** functions can also be called without an argument to get their current value.
 
 The mod attempts to provide helpful messages if you provide invalid input to the interface. In the event that you do manage to gum up the mod with some funky input, calling the **reset** function to restore the configuration to the default state is the best recourse.
+
+### Lighting
+The mod runs in "fixed" **light_mode** by default. This means that the mod will change the time of day to the **fixed_light** value, take the shot, and then return the time of day to the original value. This mode produces easier to watch videos as the day-night cycle oscillation is not present in the output video.
+
+However, if you want the day-night cycle visible in the output imagery, you need only change the **light_mode** to "none" by using:  
+`/c remote.call("timelapse", "light_mode", "none")`
 
 ## Making a video from the Timelapse images
 ### Linux
