@@ -3,8 +3,8 @@
 # Takes one argument: the seed of the world
 
 # ffmpeg
-# -framerate 8
-# Display the images at a rate of 8 per second
+# -framerate 24
+# Display the images at a rate of 24 per second
 # -pattern_type glob -i "../../script-output/timelapse/$1*.png"
 # Select the input by matching all images with $1 in their name
 # -c:v libx264
@@ -22,7 +22,7 @@
 # "../../script-output/timelapse/timelapse_$1_$(date +%s).mp4"
 # Set the output video location and name
 ffmpeg \
--framerate 8 \
+-framerate 24 \
 -pattern_type glob -i "../../script-output/timelapse/$1*.png" \
 -c:v libx264 \
 -s 1920x1080 \
