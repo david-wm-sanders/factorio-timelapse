@@ -1,5 +1,8 @@
 require "defines"
 
+local state = 0
+local current_time = 1.0
+
 function is_array(t)
     -- From: https://ericjmritz.name/2014/02/26/lua-is_array/
     local i = 0
@@ -23,6 +26,34 @@ remote.add_interface("timelapse",
         game.player.print("Timelapse activated")
       else
         game.player.print("Timelapse deactivated")
+      end
+    end
+  end,
+
+  light_mode = function(mode)
+    if mode == nil then
+      game.player.print(string.format("Light Mode = %s", global.timelapse.light_mode))
+    elseif type(mode) ~= "string" then
+      game.player.print("Argument must be a string")
+    else
+      if mode == "fixed" or mode == "none" then
+        global.timelapse.light_mode = mode
+      else
+        game.player.print("Argument must be \"fixed\" or \"none\".")
+      end
+    end
+  end,
+
+  fixed_light = function(light)
+    if light == nil then
+      game.player.print(string.format("Fixed Light = %.2f", global.timelapse.fixed_light))
+    elseif type(light) ~= "number" then
+      game.player.print("Argument must be a number")
+    else
+      if light < 0 or light > 1 then
+        game.player.print("Argument must be a number >= 0 and <= 1")
+      else
+        global.timelapse.fixed_light = light
       end
     end
   end,
@@ -110,11 +141,17 @@ remote.add_interface("timelapse",
   data = function()
     local d = global.timelapse
     local s = string.format("Timelapse: \z
-                            Count = %i, Active = %s, Interval = %is, \z
-                            Position = {x=%.2f, y=%.2f}, Resolution = %ix%i, \z
+                            Count = %i, Active = %s, \z
+                            Light Mode = %s, Fixed Light = %.2f, \z
+                            Interval = %is, \z
+                            Position = {x=%.2f, y=%.2f}, \z
+                            Resolution = %ix%i, \z
                             Zoom = %.2f, Show Entity Info = %s",
-                            d.count, d.active, d.interval / 60,
-                            d.position.x, d.position.y, d.resolution.x, d.resolution.y,
+                            d.count, d.active,
+                            d.light_mode, d.fixed_light,
+                            d.interval / 60,
+                            d.position.x, d.position.y,
+                            d.resolution.x, d.resolution.y,
                             d.zoom, d.show_entity_info)
     game.player.print(s)
   end,
@@ -128,11 +165,13 @@ function init_timelapse()
   global.timelapse = {
     count = 0,
     active = false,
+    light_mode = "fixed",
+    fixed_light = 1.0,
     -- interval = 60 ticks per seconds * number of seconds between shots
-    interval = 60 * 30,
+    interval = 60 * 60 * 5,
     -- The spawn is at {0, 0} by default
     position = {x=0, y=0},
-    resolution = {x=1920, y=1080},
+    resolution = {x=3840, y=2160},
     -- zoom (default: 1, minimum scrollable to in game: 0.29)
     zoom = 0.1,
     show_entity_info = false,
@@ -177,10 +216,32 @@ function take_shot()
     show_entity_info = global.timelapse.show_entity_info}
 end
 
+function light()
+  local d = global.timelapse
+  if d.light_mode == "fixed" then
+    current_time = game.daytime
+    game.daytime = d.fixed_light
+  end
+end
+
+function unlight()
+  local d = global.timelapse
+  if d.light_mode == "fixed" then
+    game.daytime = current_time
+  end
+end
+
 script.on_event(defines.events.on_tick, function(event)
   if global.timelapse.active then
-    if game.tick % global.timelapse.interval == 0 then
+    if (game.tick + 1) % global.timelapse.interval == 0 then
+      light()
+      state = 1
+    elseif state == 1 then
       take_shot()
+      state = 2
+    elseif state == 2 then
+      unlight()
+      state = 0
     end
   end
 end)
