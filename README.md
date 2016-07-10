@@ -75,4 +75,5 @@ However, if you want the day-night cycle visible in the output imagery, you need
 ### Linux
 Use the **make_timelapse.sh** script to command ffmpeg to stitch Timelapse images into a video.
 
-[Example video](https://www.youtube.com/watch?v=tAKy2vmT5AM)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=VXIPNKQAPBQ" target="_blank"><img src="http://img.youtube.com/vi/VXIPNKQAPBQ/0.jpg"
+alt="factorio-timelapse example" width="320" height="180" border="10" /></a>
