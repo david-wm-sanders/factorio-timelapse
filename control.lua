@@ -168,7 +168,7 @@ function init_timelapse()
     light_mode = "fixed",
     fixed_light = 1.0,
     -- interval = 60 ticks per seconds * number of seconds between shots
-    interval = 60 * 30,
+    interval = 60 * 60 * 5,
     -- The spawn is at {0, 0} by default
     position = {x=0, y=0},
     resolution = {x=3840, y=2160},
